@@ -3,11 +3,11 @@ from PySide2.QtQuick import QQuickView
 from PySide2.QtCore import QUrl
 from PySide2.QtQml import qmlRegisterType
 
-from MyPaint import *
+from Map import *
 
 app = QApplication([])
 
-qmlRegisterType(MyPaint, 'MyPaint', 1, 0, 'MyPaint')
+qmlRegisterType(Map, 'Map', 1, 0, 'Map')
 
 view = QQuickView()
 url = QUrl("main.qml")
