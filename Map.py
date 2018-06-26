@@ -1,4 +1,3 @@
-from PySide2 import QtCore
 from PySide2.QtCore import Qt, QRect
 from PySide2.QtQuick import QQuickPaintedItem
 from PySide2.QtGui import QImage
