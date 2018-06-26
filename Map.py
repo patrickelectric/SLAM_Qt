@@ -30,7 +30,7 @@ class Map(QQuickPaintedItem):
 
     def createRandomMap(self):
         for i in range(self.image.byteCount()):
-            if random.random() < 0.4:
+            if random.random() < 0.35:
                 self.image.bits()[i] = 255
             else:
                 self.image.bits()[i] = 0
