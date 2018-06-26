@@ -4,6 +4,7 @@ from PySide2.QtQuick import QQuickPaintedItem
 from PySide2.QtGui import QImage
 
 import random
+import time
 
 class Map(QQuickPaintedItem):
     def __init__(self, parent = None):
@@ -57,20 +58,22 @@ class Map(QQuickPaintedItem):
 
         return count
 
-    def doStep(self, n = 0):
-        deathLimit = 15
+    def doStep(self):
+        deathLimit = 14
         _image = self.image.copy()
         for x in range(self.image.width()):
             for y in range(self.image.height()):
-                if self.countNeighbours(x, y, _image, 2) < deathLimit:
-                    self.setPixel(x, y, 255)
-                else:
+                if self.countNeighbours(x, y, _image, 2) > deathLimit or \
+                    x == 0 or y == 0 or x == _image.width() - 1 or y == _image.height() - 1:
                     self.setPixel(x, y, 0)
+                else:
+                    self.setPixel(x, y, 255)
+
+
 
     def generateMap(self):
         self.createRandomMap()
         self.update()
-
 
     def paint(self, painter):
         painter.save()
@@ -78,7 +81,10 @@ class Map(QQuickPaintedItem):
         painter.restore()
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_A:
+        if event.key() == Qt.Key_Space:
+            print('Update..')
+            start = time.time()
             self.doStep()
+            print('Took: %.2fs' % (time.time() - start))
             self.update()
         event.accept()
