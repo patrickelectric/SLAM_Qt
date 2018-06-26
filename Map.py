@@ -68,8 +68,6 @@ class Map(QQuickPaintedItem):
                 else:
                     self.setPixel(x, y, 255)
 
-
-
     def generateMap(self):
         self.createRandomMap()
         self.update()
