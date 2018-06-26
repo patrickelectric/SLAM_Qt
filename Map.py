@@ -13,7 +13,7 @@ class Map(QQuickPaintedItem):
         self.image = QImage(300, 300, QImage.Format_Grayscale8)
         self.generateMap()
 
-    def pixel(self, x, y, image = None):
+    def pixel(self, x: int, y: int, image = None) -> bool:
         if not image:
             image = self.image
 
@@ -21,7 +21,7 @@ class Map(QQuickPaintedItem):
         # QImage::pixelIndex: Not applicable for 8-bpp images (no palette)
         return image.bits()[x + y * image.bytesPerLine()] & 0xff
 
-    def setPixel(self, x, y, value, image = None):
+    def setPixel(self, x: int, y: int, value: int, image = None):
         if not image:
             image = self.image
 
@@ -36,7 +36,7 @@ class Map(QQuickPaintedItem):
             else:
                 self.image.bits()[i] = 0
 
-    def countNeighbours(self, x, y, image = None, n = 1):
+    def countNeighbours(self, x: int, y: int, image = None, n = 1) -> int:
         if not image:
             image = self.image
 
