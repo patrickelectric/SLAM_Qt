@@ -29,7 +29,10 @@ ApplicationWindow {
         Menu {
             title: "Map"
             MenuItem { text: "Generate" }
-            MenuItem { text: "Step" }
+            MenuItem {
+                text: "Step"
+                onTriggered: map.doStep()
+            }
             MenuItem { text: "5 Steps" }
         }
     }

@@ -1,4 +1,4 @@
-from PySide2.QtCore import Qt, QRect, Property, Signal, QEventLoop
+from PySide2.QtCore import Qt, QRect, Property, Signal, QEventLoop, Slot
 from PySide2.QtQuick import QQuickPaintedItem
 from PySide2.QtGui import QImage
 
@@ -59,6 +59,7 @@ class Map(QQuickPaintedItem):
 
         return count
 
+    @Slot()
     def doStep(self):
         deathLimit = 14
         self._percentage = 0
@@ -77,6 +78,7 @@ class Map(QQuickPaintedItem):
                 else:
                     self.setPixel(x, y, 255)
         # Update percentage
+        self.update()
         self.percentageChanged.emit()
         QEventLoop().processEvents()
 
@@ -95,7 +97,6 @@ class Map(QQuickPaintedItem):
             start = time.time()
             self.doStep()
             print('Took: %.2fs' % (time.time() - start))
-            self.update()
         event.accept()
 
     def getPercentage(self):
