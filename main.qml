@@ -33,7 +33,10 @@ ApplicationWindow {
                 text: "Step"
                 onTriggered: map.doStep()
             }
-            MenuItem { text: "5 Steps" }
+            MenuItem {
+                text: "5 Steps"
+                onTriggered: map.doStep(5)
+            }
         }
     }
 

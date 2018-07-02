@@ -59,24 +59,25 @@ class Map(QQuickPaintedItem):
 
         return count
 
-    @Slot()
-    def doStep(self):
+    @Slot(int)
+    def doStep(self, n = 1):
         deathLimit = 14
         self._percentage = 0
-        _image = self.image.copy()
-        for x in range(self.image.width()):
-            self._percentage += 1.0/(self.image.width())
-            if x%10 == 0:
-                # Update percentage
-                self.percentageChanged.emit()
-                # processEvent is necessary
-                QEventLoop().processEvents()
-            for y in range(self.image.height()):
-                if self.countNeighbours(x, y, _image, 2) > deathLimit or \
-                    x == 0 or y == 0 or x == _image.width() - 1 or y == _image.height() - 1:
-                    self.setPixel(x, y, 0)
-                else:
-                    self.setPixel(x, y, 255)
+        for _ in range(n):
+            _image = self.image.copy()
+            for x in range(self.image.width()):
+                self._percentage += 1.0/(self.image.width()*n)
+                if x%10 == 0:
+                    # Update percentage
+                    self.percentageChanged.emit()
+                    # processEvent is necessary
+                    QEventLoop().processEvents()
+                for y in range(self.image.height()):
+                    if self.countNeighbours(x, y, _image, 2) > deathLimit or \
+                        x == 0 or y == 0 or x == _image.width() - 1 or y == _image.height() - 1:
+                        self.setPixel(x, y, 0)
+                    else:
+                        self.setPixel(x, y, 255)
         # Update percentage
         self.update()
         self.percentageChanged.emit()
