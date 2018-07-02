@@ -1,4 +1,4 @@
-from PySide2.QtCore import Qt, QRect
+from PySide2.QtCore import Qt, QRect, Property, Signal, QEventLoop
 from PySide2.QtQuick import QQuickPaintedItem
 from PySide2.QtGui import QImage
 
@@ -6,11 +6,13 @@ import random
 import time
 
 class Map(QQuickPaintedItem):
+
     def __init__(self, parent = None):
         super(Map, self).__init__(parent)
         # QImage does not work with bits, only with bytes
         self.image = QImage(300, 300, QImage.Format_Grayscale8)
         self.generateMap()
+        self._percentage = 0
 
     def pixel(self, x: int, y: int, image = None) -> bool:
         if not image:
@@ -59,14 +61,24 @@ class Map(QQuickPaintedItem):
 
     def doStep(self):
         deathLimit = 14
+        self._percentage = 0
         _image = self.image.copy()
         for x in range(self.image.width()):
+            self._percentage += 1.0/(self.image.width())
+            if x%10 == 0:
+                # Update percentage
+                self.percentageChanged.emit()
+                # processEvent is necessary
+                QEventLoop().processEvents()
             for y in range(self.image.height()):
                 if self.countNeighbours(x, y, _image, 2) > deathLimit or \
                     x == 0 or y == 0 or x == _image.width() - 1 or y == _image.height() - 1:
                     self.setPixel(x, y, 0)
                 else:
                     self.setPixel(x, y, 255)
+        # Update percentage
+        self.percentageChanged.emit()
+        QEventLoop().processEvents()
 
     def generateMap(self):
         self.createRandomMap()
@@ -85,3 +97,9 @@ class Map(QQuickPaintedItem):
             print('Took: %.2fs' % (time.time() - start))
             self.update()
         event.accept()
+
+    def getPercentage(self):
+        return self._percentage
+
+    percentageChanged = Signal()
+    percentage = Property(float, getPercentage, notify=percentageChanged)
