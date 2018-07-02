@@ -54,7 +54,7 @@ ApplicationWindow {
         anchors.fill: parent
         focus: true
         onPercentageChanged: {
-            footerText.text = "Updating... " + percentage.toFixed(1)*100 + "%"
+            footerText.text = "Updating... " + (percentage*100).toFixed(2) + "%"
         }
     }
 
