@@ -9,6 +9,12 @@ class Map(QQuickPaintedItem):
 
     def __init__(self, parent = None):
         super(Map, self).__init__(parent)
+
+        self.setAcceptedMouseButtons(Qt.AllButtons)
+        self.generate()
+
+    @Slot()
+    def generate(self):
         # QImage does not work with bits, only with bytes
         self.image = QImage(300, 300, QImage.Format_Grayscale8)
         self.generateMap()
