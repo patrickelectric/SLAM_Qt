@@ -28,10 +28,13 @@ ApplicationWindow {
 
         Menu {
             title: "Map"
-            MenuItem { text: "Generate" }
+            MenuItem {
+                text: "Generate"
+                onTriggered: map.generate()
+            }
             MenuItem {
                 text: "Step"
-                onTriggered: map.doStep()
+                onTriggered: map.doStep(1)
             }
             MenuItem {
                 text: "5 Steps"
@@ -46,7 +49,16 @@ ApplicationWindow {
                 onTriggered: map.doStep(20)
             }
         }
+
+        Menu {
+            title: "Vehicle"
+            MenuItem {
+                text: "Add."
+                onTriggered: map.addVehicle();
+            }
+        }
     }
+
 
     Map {
         id: map
