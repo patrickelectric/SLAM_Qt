@@ -1,6 +1,6 @@
-from PySide2.QtCore import Qt, QRect, Property, Signal, QEventLoop, Slot
+from PySide2.QtCore import Qt, QRect, Property, Signal, QEventLoop, Slot, QPoint
 from PySide2.QtQuick import QQuickPaintedItem
-from PySide2.QtGui import QImage
+from PySide2.QtGui import QImage, QPainter
 
 import random
 import time
@@ -19,6 +19,12 @@ class Map(QQuickPaintedItem):
         self.image = QImage(300, 300, QImage.Format_Grayscale8)
         self.generateMap()
         self._percentage = 0
+
+        self._pressClick = QPoint()
+        self._doMapMove = False
+        self._scale = 1
+        self._offset = QPoint()
+
 
     def pixel(self, x: int, y: int, image = None) -> bool:
         if not image:
@@ -67,6 +73,10 @@ class Map(QQuickPaintedItem):
 
     @Slot(int)
     def doStep(self, n = 1):
+        if self.image.format() != QImage.Format_Grayscale8:
+            print("Wrong file format, generate map again.")
+            return
+
         deathLimit = 14
         self._percentage = 0
         for _ in range(n):
@@ -94,9 +104,20 @@ class Map(QQuickPaintedItem):
         self.update()
 
     def paint(self, painter):
-        painter.save()
+        if self._scale > 1:
+            self._offset = QPoint(
+                    (self._scale - 1)*self.width()/2,
+                    (self._scale - 1)*self.height()/2
+                ) - self._pressClick
+        else:
+            self._pressClick = QPoint()
+            self._offset = QPoint(
+                    (self._scale - 1)*self.width()/2,
+                    (self._scale - 1)*self.height()/2
+                )
+        painter.translate(-self._offset)
+        painter.scale(self._scale, self._scale)
         painter.drawImage(QRect(0, 0, self.width(), self.height()), self.image)
-        painter.restore()
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Space:
@@ -106,8 +127,31 @@ class Map(QQuickPaintedItem):
             print('Took: %.2fs' % (time.time() - start))
         event.accept()
 
+    def wheelEvent(self, event):
+        # Get zoom
+        # delta is around +-120
+        self._scale += event.delta()/(120*2)
+        if self._scale < 1:
+            self._scale = 1
+        self.update()
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            self._pressClick += QPoint(self.width(), self.height())/2 - event.pos()
+            self._doMapMove = True
+            self.update()
+
     def getPercentage(self):
         return self._percentage
 
     percentageChanged = Signal()
     percentage = Property(float, getPercentage, notify=percentageChanged)
+
+    @Slot()
+    def addVehicle(self):
+        self.image = self.image.convertToFormat(QImage.Format_RGBA8888)
+        painter = QPainter(self.image)
+        painter.drawImage(QRect(50, 50, 13, 15), QImage("imgs/turtle.png"))
+        painter.end()
+        #self.image = image.copy()
+        self.update()
