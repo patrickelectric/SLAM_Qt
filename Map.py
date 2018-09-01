@@ -160,7 +160,6 @@ class Map(QQuickPaintedItem):
         painter = QPainter(self.image)
         painter.drawImage(QRect(50, 50, 13, 15), QImage("imgs/turtle.png"))
         painter.end()
-        #self.image = image.copy()
         self.update()
 
     @Slot(str)
