@@ -157,3 +157,24 @@ class Map(QQuickPaintedItem):
         painter.end()
         #self.image = image.copy()
         self.update()
+
+    @Slot(str)
+    def saveMap(self, path: str):
+        # Check image encoder
+        if(self.image.format() != QImage.Format_Grayscale8):
+            print('Wrong map pixel format, create map without vehicle added.')
+            return
+        ok = self.image.save(path)
+        if(not ok):
+            print('It was not possible to save Map in:', path)
+
+    @Slot(str)
+    def loadMap(self, path: str):
+        # Check image encoder
+        image = QImage(path)
+        if(image.format() != QImage.Format_Grayscale8):
+            print('Wrong map pixel format, map should be Grayscale8.')
+            return
+        self.image = image
+        self.update()
+

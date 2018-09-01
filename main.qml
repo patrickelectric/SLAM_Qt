@@ -77,7 +77,8 @@ ApplicationWindow {
         nameFilters: ["Map files (*.png)"]
         fileMode: QLP.FileDialog.OpenFile
         onOutputChanged: {
-            print('>', output)
+            print('Load from >', output)
+            map.loadMap(output)
         }
     }
 
@@ -88,7 +89,8 @@ ApplicationWindow {
         nameFilters: ["Map files (*.png)"]
         fileMode: QLP.FileDialog.SaveFile
         onOutputChanged: {
-            print('>', output)
+            print('Save in >', output)
+            map.saveMap(output)
         }
     }
 }
