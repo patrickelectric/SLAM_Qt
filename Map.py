@@ -143,11 +143,11 @@ class Map(QQuickPaintedItem):
             self._doMapMove = True
             self.update()
 
-    def getPercentage(self):
+    def percentage(self):
         return self._percentage
 
     percentageChanged = Signal()
-    percentage = Property(float, getPercentage, notify=percentageChanged)
+    percentage = Property(float, percentage, notify=percentageChanged)
 
     @Slot()
     def addVehicle(self):
