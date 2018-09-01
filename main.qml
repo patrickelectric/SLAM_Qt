@@ -57,6 +57,14 @@ ApplicationWindow {
                 onTriggered: map.addVehicle();
             }
         }
+
+        Menu {
+            title: "Lidar"
+            MenuItem {
+                text: "Draw Circle"
+                onTriggered: map.drawCircle();
+            }
+        }
     }
 
 
