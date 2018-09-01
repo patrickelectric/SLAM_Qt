@@ -49,7 +49,7 @@ class Map(QQuickPaintedItem):
             else:
                 self.image.bits()[i] = 0
 
-    def countNeighbours(self, x: int, y: int, image = None, n = 1) -> int:
+    def countNeighbors(self, x: int, y: int, image = None, n = 1) -> int:
         if not image:
             image = self.image
 
@@ -91,7 +91,7 @@ class Map(QQuickPaintedItem):
                     # Update map
                     self.update()
                 for y in range(self.image.height()):
-                    if self.countNeighbours(x, y, _image, 2) > deathLimit or \
+                    if self.countNeighbors(x, y, _image, 2) > deathLimit or \
                         x == 0 or y == 0 or x == _image.width() - 1 or y == _image.height() - 1:
                         self.setPixel(x, y, 0)
                     else:
