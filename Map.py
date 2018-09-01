@@ -2,6 +2,7 @@ from PySide2.QtCore import Qt, QRect, Property, Signal, QEventLoop, Slot, QPoint
 from PySide2.QtQuick import QQuickPaintedItem
 from PySide2.QtGui import QImage, QPainter
 
+import math
 import random
 import time
 
@@ -182,3 +183,19 @@ class Map(QQuickPaintedItem):
         self.image = image
         self.update()
 
+    @Slot()
+    def drawCircle(self):
+        a = 90
+        b = 80
+        angle_step_size = 16
+        radius = 90
+        for step in range(0, angle_step_size - 1):
+            angle = 2*math.pi*step/angle_step_size
+            for r in range(1, radius):
+                x = a + r*math.cos(angle)
+                y = b + r*math.sin(angle)
+                if(self.pixel(x, y)):
+                    self.setPixel(x, y, 0x88)
+                else:
+                    break
+        self.update()
