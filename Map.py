@@ -88,6 +88,8 @@ class Map(QQuickPaintedItem):
                     self.percentageChanged.emit()
                     # processEvent is necessary
                     QEventLoop().processEvents()
+                    # Update map
+                    self.update()
                 for y in range(self.image.height()):
                     if self.countNeighbours(x, y, _image, 2) > deathLimit or \
                         x == 0 or y == 0 or x == _image.width() - 1 or y == _image.height() - 1:
