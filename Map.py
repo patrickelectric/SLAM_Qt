@@ -34,7 +34,7 @@ class Map(QQuickPaintedItem):
 
         # This solves:
         # QImage::pixelIndex: Not applicable for 8-bpp images (no palette)
-        return image.bits()[x + y * image.bytesPerLine()] & 0xff
+        return image.bits()[int(x) + int(y) * image.bytesPerLine()] & 0xff
 
     def setPixel(self, x: int, y: int, value: int, image = None):
         if not image:
@@ -42,7 +42,7 @@ class Map(QQuickPaintedItem):
 
         # This solves:
         # QImage::pixelIndex: Not applicable for 8-bpp images (no palette)
-        image.bits()[x + y * image.bytesPerLine()] = value
+        image.bits()[int(x) + int(y) * image.bytesPerLine()] = value
 
     def createRandomMap(self):
         for i in range(self.image.byteCount()):
