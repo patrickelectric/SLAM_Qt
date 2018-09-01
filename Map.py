@@ -10,6 +10,8 @@ class Map(QQuickPaintedItem):
     def __init__(self, parent = None):
         super(Map, self).__init__(parent)
 
+        self.viewport = None
+
         self.setAcceptedMouseButtons(Qt.AllButtons)
         self.generate()
 
@@ -120,6 +122,7 @@ class Map(QQuickPaintedItem):
         painter.translate(-self._offset)
         painter.scale(self._scale, self._scale)
         painter.drawImage(QRect(0, 0, self.width(), self.height()), self.image)
+        self.viewport = painter.viewport()
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Space:
