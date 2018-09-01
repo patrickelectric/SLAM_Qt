@@ -145,6 +145,8 @@ class Map(QQuickPaintedItem):
             self._pressClick += QPoint(self.width(), self.height())/2 - event.pos()
             self._doMapMove = True
             self.update()
+        if self.viewport:
+            print('Mouse click in:', 2*event.pos().x()*self.image.width()/self.viewport.width(), 2*event.pos().y()*self.image.height()/self.viewport.height())
 
     def percentage(self):
         return self._percentage
