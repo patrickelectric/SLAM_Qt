@@ -20,6 +20,7 @@ class Map(QQuickPaintedItem):
     def generate(self):
         # QImage does not work with bits, only with bytes
         self.image = QImage(300, 300, QImage.Format_Grayscale8)
+        self.oldImage = None
         self.generateMap()
         self._percentage = 0
 
@@ -101,12 +102,14 @@ class Map(QQuickPaintedItem):
                         self.setPixel(x, y, 255)
         # Update percentage
         self.update()
+        self.oldImage = self.image.copy()
         self.percentageChanged.emit()
         QEventLoop().processEvents()
 
     def generateMap(self):
         self.createRandomMap()
         self.update()
+        self.oldImage = self.image.copy()
 
     def paint(self, painter):
         if self._scale > 1:
@@ -147,7 +150,15 @@ class Map(QQuickPaintedItem):
             self._doMapMove = True
             self.update()
         if self.viewport:
-            print('Mouse click in:', 2*event.pos().x()*self.image.width()/self.viewport.width(), 2*event.pos().y()*self.image.height()/self.viewport.height())
+            a, b = 2*event.pos().x()*self.image.width()/self.viewport.width(), 2*event.pos().y()*self.image.height()/self.viewport.height()
+            #print('Mouse click in:', a, b)
+            self.drawCircle(a, b)
+
+    def mouseMoveEvent(self, event):
+        if self.viewport:
+            a, b = 2*event.pos().x()*self.image.width()/self.viewport.width(), 2*event.pos().y()*self.image.height()/self.viewport.height()
+            #print('Mouse move:', a, b)
+            self.drawCircle(a, b)
 
     def percentage(self):
         return self._percentage
@@ -181,21 +192,46 @@ class Map(QQuickPaintedItem):
             print('Wrong map pixel format, map should be Grayscale8.')
             return
         self.image = image
+        self.oldImage = self.image.copy()
         self.update()
 
     @Slot()
-    def drawCircle(self):
-        a = 90
-        b = 80
-        angle_step_size = 16
+    def drawCircle(self, a: int, b: int):
+        angle_step_size = 64
         radius = 90
+        initPoint = (None, None)
+        finalPoint = (None, None)
+        firstPoint = finalPoint
+        if not self.oldImage:
+            self.oldImage = self.image.copy()
+        else:
+            self.image = self.oldImage.copy()
+        painter = QPainter(self.image)
+        painter.setPen('#888888')
+        for i in [-1, 0, 1]:
+            for u in [-1, 0, -1]:
+                self.setPixel(a + i, b + u, 0x88)
         for step in range(0, angle_step_size - 1):
             angle = 2*math.pi*step/angle_step_size
+            initPoint = finalPoint
             for r in range(1, radius):
                 x = a + r*math.cos(angle)
                 y = b + r*math.sin(angle)
+                finalPoint = (x, y)
                 if(self.pixel(x, y)):
-                    self.setPixel(x, y, 0x88)
+                    #self.setPixel(x, y, 0x88)
+                    pass
                 else:
                     break
+
+            if initPoint[0] and initPoint[1]:
+                painter.drawLine(initPoint[0], initPoint[1], finalPoint[0], finalPoint[1])
+                #print(initPoint, finalPoint)
+                pass
+            else:
+                firstPoint = finalPoint
+
+        painter.drawLine(finalPoint[0], finalPoint[1], firstPoint[0], firstPoint[1], )
+        #print(initPoint, finalPoint)
+        painter.end()
         self.update()
