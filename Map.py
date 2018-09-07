@@ -25,10 +25,6 @@ class Map(QQuickPaintedItem):
         self._percentage = 0
 
         self._pressClick = QPoint()
-        self._doMapMove = False
-        self._scale = 1
-        self._offset = QPoint()
-
 
     def pixel(self, x: int, y: int, image = None) -> bool:
         if not image:
@@ -112,19 +108,6 @@ class Map(QQuickPaintedItem):
         self.oldImage = self.image.copy()
 
     def paint(self, painter):
-        if self._scale > 1:
-            self._offset = QPoint(
-                    (self._scale - 1)*self.width()/2,
-                    (self._scale - 1)*self.height()/2
-                ) - self._pressClick
-        else:
-            self._pressClick = QPoint()
-            self._offset = QPoint(
-                    (self._scale - 1)*self.width()/2,
-                    (self._scale - 1)*self.height()/2
-                )
-        painter.translate(-self._offset)
-        painter.scale(self._scale, self._scale)
         painter.drawImage(QRect(0, 0, self.width(), self.height()), self.image)
         self.viewport = painter.viewport()
 
@@ -135,14 +118,6 @@ class Map(QQuickPaintedItem):
             self.doStep()
             print('Took: %.2fs' % (time.time() - start))
         event.accept()
-
-    def wheelEvent(self, event):
-        # Get zoom
-        # delta is around +-120
-        self._scale += event.delta()/(120*2)
-        if self._scale < 1:
-            self._scale = 1
-        self.update()
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
