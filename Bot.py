@@ -59,6 +59,7 @@ class Bot(QQuickPaintedItem):
         self.image.fill('#000000ff')
         painter = QPainter(self.image)
         painter.setPen('#ff0000')
+        lidarPoints = []
         for i in [-1, 0, 1]:
             for u in [-1, 0, -1]:
                 self.image.setPixelColor(QPoint(a + i, b + u), QColor('#00ff00'))
@@ -74,18 +75,22 @@ class Bot(QQuickPaintedItem):
                     pass
                 else:
                     break
-
-            if initPoint[0] != None and initPoint[1] != None:
+            if initPoint[0] is not None and initPoint[1] is not None:
                 painter.drawLine(initPoint[0], initPoint[1], finalPoint[0], finalPoint[1])
                 #print(initPoint, finalPoint)
                 pass
             else:
                 firstPoint = finalPoint
+            lidarPoints.append(finalPoint)
 
         painter.drawLine(finalPoint[0], finalPoint[1], firstPoint[0], firstPoint[1])
         #print(initPoint, finalPoint)
         painter.end()
         self.update()
+        self.runObstacleAvoidance(point, lidarPoints)
+
+    def runObstacleAvoidance(self, point, lidarPoints):
+        print(point, lidarPoints)
         nextPoint = point + QPoint(1, 0)
         if self.map.pixel(nextPoint.x(), nextPoint.y()) != 0:
             self.position = nextPoint
