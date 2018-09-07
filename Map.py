@@ -16,6 +16,8 @@ class Map(QQuickPaintedItem):
         self.setAcceptedMouseButtons(Qt.AllButtons)
         self.generate()
 
+    clicked = Signal(QPoint)
+
     @Slot()
     def generate(self):
         # QImage does not work with bits, only with bytes
@@ -120,20 +122,12 @@ class Map(QQuickPaintedItem):
         event.accept()
 
     def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:
-            self._pressClick += QPoint(self.width(), self.height())/2 - event.pos()
-            self._doMapMove = True
-            self.update()
-        if self.viewport:
-            a, b = 2*event.pos().x()*self.image.width()/self.viewport.width(), 2*event.pos().y()*self.image.height()/self.viewport.height()
-            #print('Mouse click in:', a, b)
-            self.drawCircle(a, b)
+        a, b = 2*event.pos().x()*self.image.width()/self.viewport.width(), 2*event.pos().y()*self.image.height()/self.viewport.height()
+        self.clicked.emit(QPoint(a, b))
 
     def mouseMoveEvent(self, event):
-        if self.viewport:
-            a, b = 2*event.pos().x()*self.image.width()/self.viewport.width(), 2*event.pos().y()*self.image.height()/self.viewport.height()
-            #print('Mouse move:', a, b)
-            self.drawCircle(a, b)
+        a, b = 2*event.pos().x()*self.image.width()/self.viewport.width(), 2*event.pos().y()*self.image.height()/self.viewport.height()
+        self.clicked.emit(QPoint(a, b))
 
     def percentage(self):
         return self._percentage
@@ -168,45 +162,4 @@ class Map(QQuickPaintedItem):
             return
         self.image = image
         self.oldImage = self.image.copy()
-        self.update()
-
-    @Slot()
-    def drawCircle(self, a: int, b: int):
-        angle_step_size = 64
-        radius = 90
-        initPoint = (None, None)
-        finalPoint = (None, None)
-        firstPoint = finalPoint
-        if not self.oldImage:
-            self.oldImage = self.image.copy()
-        else:
-            self.image = self.oldImage.copy()
-        painter = QPainter(self.image)
-        painter.setPen('#888888')
-        for i in [-1, 0, 1]:
-            for u in [-1, 0, -1]:
-                self.setPixel(a + i, b + u, 0x88)
-        for step in range(0, angle_step_size - 1):
-            angle = 2*math.pi*step/angle_step_size
-            initPoint = finalPoint
-            for r in range(1, radius):
-                x = a + r*math.cos(angle)
-                y = b + r*math.sin(angle)
-                finalPoint = (x, y)
-                if(self.pixel(x, y)):
-                    #self.setPixel(x, y, 0x88)
-                    pass
-                else:
-                    break
-
-            if initPoint[0] and initPoint[1]:
-                painter.drawLine(initPoint[0], initPoint[1], finalPoint[0], finalPoint[1])
-                #print(initPoint, finalPoint)
-                pass
-            else:
-                firstPoint = finalPoint
-
-        painter.drawLine(finalPoint[0], finalPoint[1], firstPoint[0], firstPoint[1], )
-        #print(initPoint, finalPoint)
-        painter.end()
         self.update()

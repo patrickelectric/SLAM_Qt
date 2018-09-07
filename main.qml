@@ -2,6 +2,7 @@ import QtQuick 2.7
 import QtQuick.Controls 2.4
 import Qt.labs.platform 1.0 as QLP
 
+import Bot 1.0
 import Map 1.0
 
 ApplicationWindow {
@@ -67,6 +68,14 @@ ApplicationWindow {
         }
     }
 
+
+    Bot {
+        id: bot
+        map: map
+        anchors.fill: map
+        z: map.z + 1
+        visible: true
+    }
 
     Map {
         id: map
