@@ -40,11 +40,11 @@ class Bot(QQuickPaintedItem):
         self.timer.start(100)
 
     def mousePressEvent(self, event):
-        a, b = 2*event.pos().x()*self.image.width()/self.viewport.width(), 2*event.pos().y()*self.image.height()/self.viewport.height()
+        a, b = event.pos().x()*self.image.width()/self.viewport.width(), event.pos().y()*self.image.height()/self.viewport.height()
         #print(a,b)
 
     def mouseMoveEvent(self, event):
-        a, b = 2*event.pos().x()*self.image.width()/self.viewport.width(), 2*event.pos().y()*self.image.height()/self.viewport.height()
+        a, b = event.pos().x()*self.image.width()/self.viewport.width(), event.pos().y()*self.image.height()/self.viewport.height()
         #print(a,b)
 
     @Slot(QPoint)
@@ -90,7 +90,24 @@ class Bot(QQuickPaintedItem):
         self.runObstacleAvoidance(point, lidarPoints)
 
     def runObstacleAvoidance(self, point, lidarPoints):
-        print(point, lidarPoints)
-        nextPoint = point + QPoint(1, 0)
-        if self.map.pixel(nextPoint.x(), nextPoint.y()) != 0:
+        #287, 293
+        ao = QPoint(287, 293) - point
+        #print(math.atan(ao.x()/ao.y()))
+        #print(point, lidarPoints)
+
+        nextPoint = point
+        # horizontal > vertical
+        if abs(ao.x()) > abs(ao.y()):
+            # final point is in the right side
+            if ao.x() > 0:
+                nextPoint += QPoint(1, 0)
+            else:
+                nextPoint += QPoint(-1, 0)
+        else:
+            if ao.y() > 0:
+                nextPoint += QPoint(0, 1)
+            else:
+                nextPoint += QPoint(0, -1)
+
+        if self.map.pixel(nextPoint.x(), nextPoint.y()):
             self.position = nextPoint
