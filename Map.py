@@ -122,11 +122,11 @@ class Map(QQuickPaintedItem):
         event.accept()
 
     def mousePressEvent(self, event):
-        a, b = 2*event.pos().x()*self.image.width()/self.viewport.width(), 2*event.pos().y()*self.image.height()/self.viewport.height()
+        a, b = event.pos().x()*self.image.width()/self.width(), event.pos().y()*self.image.height()/self.height()
         self.clicked.emit(QPoint(a, b))
 
     def mouseMoveEvent(self, event):
-        a, b = 2*event.pos().x()*self.image.width()/self.viewport.width(), 2*event.pos().y()*self.image.height()/self.viewport.height()
+        a, b = event.pos().x()*self.image.width()/self.width(), event.pos().y()*self.image.height()/self.height()
         self.clicked.emit(QPoint(a, b))
 
     def percentage(self):

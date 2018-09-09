@@ -36,16 +36,15 @@ class Bot(QQuickPaintedItem):
     @Slot(QPoint)
     def handleClick(self, point: QPoint):
         self.position = point
+        self.around = False
         self.drawCircle(point)
         self.timer.start(100)
 
     def mousePressEvent(self, event):
-        a, b = 2*event.pos().x()*self.image.width()/self.viewport.width(), 2*event.pos().y()*self.image.height()/self.viewport.height()
-        #print(a,b)
+        a, b = event.pos().x()*self.image.width()/self.width(), event.pos().y()*self.image.height()/self.height()
 
     def mouseMoveEvent(self, event):
-        a, b = 2*event.pos().x()*self.image.width()/self.viewport.width(), 2*event.pos().y()*self.image.height()/self.viewport.height()
-        #print(a,b)
+        a, b = event.pos().x()*self.image.width()/self.width(), event.pos().y()*self.image.height()/self.height()
 
     @Slot(QPoint)
     def drawCircle(self, point: QPoint):
