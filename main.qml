@@ -1,5 +1,6 @@
 import QtQuick 2.7
 import QtQuick.Controls 2.4
+import QtQuick.Controls.Material 2.1
 import Qt.labs.platform 1.0 as QLP
 
 import Bot 1.0
@@ -9,6 +10,8 @@ ApplicationWindow {
     width: 1024
     height: 768
     visible: true
+    Material.theme: Material.Dark
+    Material.accent: Material.Blue
 
     footer: Text {
         id: footerText

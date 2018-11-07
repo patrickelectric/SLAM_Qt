@@ -8,6 +8,7 @@ from PySide2.QtQml import qmlRegisterType
 from Map import *
 from Bot import *
 
+sys.argv += ['--style', 'material']
 app = QApplication(sys.argv)
 
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
