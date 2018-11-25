@@ -14,6 +14,7 @@ class Bot(QQuickPaintedItem):
 
         self._map = None
         self.image = QImage(300, 300, QImage.Format_RGBA8888)
+        self.image.fill('#000000ff')
         self.timer = QTimer()
         self.position = QPoint()
         self.around = None
@@ -31,6 +32,7 @@ class Bot(QQuickPaintedItem):
         self._map = map
         self._map.clicked.connect(self.handleClick)
         self.image = QImage(self.map.image.width(), self.map.image.height(), QImage.Format_RGBA8888)
+        self.image.fill('#000000ff')
 
     def getMap(self) -> Map:
         return self._map
