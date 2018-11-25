@@ -1,6 +1,6 @@
 # SLAM Qt
 
-This is a simple repository to study "[SLAM for dummies](https://ocw.mit.edu/courses/aeronautics-and-astronautics/16-412j-cognitive-robotics-spring-2005/projects/1aslam_blas_repo.pdf)".
+This is a simple repository to study "[SLAM for dummies](http://web.mit.edu/16.412j/www/html/Final%20Projects/Soren_project.ps)".
 
 ## To do:
 ###### Simulation
