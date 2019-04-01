@@ -14,8 +14,9 @@ Robots.](https://pdfs.semanticscholar.org/519e/790c8477cfb1d1a176e220f010d5ec5b1
   - [ ] Potential Field
   - [ ] Vector Field Histogram (VFH)
   - [ ] Bubble Band Technique
-  - [ ] SUSNEA, MINZU, VASILIU Proposal 
-  
+  - [x] SUSNEA, MINZU, VASILIU Proposal
+        ![](/doc/proposal.gif)
+
 
 ---
 SLAM for dummies appears to be Free, but I'm not sure.
