@@ -58,7 +58,7 @@ Window {
                 u -= lastIndex
             }
             var lidarDist = Math.abs(Math.hypot(pos.x-movableBox.lidarOutput[u].x, pos.y-movableBox.lidarOutput[u].y))
-            alphaRS += (i+0.5)*alpha0*Math.pow(lidarDist, 100);
+            alphaRS += i*alpha0*Math.pow(lidarDist, 100);
             alphaRI += Math.pow(lidarDist, 100);
         }
         angleR = alphaRS/alphaRI;
