@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="Lidar.qml">qml/Lidar.qml</file>
+        <file alias="main.qml">qml/main.qml</file>
+        <file alias="MovableBox.qml">qml/MovableBox.qml</file>
+        <file alias="Obstacle.qml">qml/Obstacle.qml</file>
+        <file alias="PhysicsItem.qml">qml/PhysicsItem.qml</file>
+        <file alias="Robot.qml">qml/Robot.qml</file>
+        <file alias="ScreenBoundaries.qml">qml/ScreenBoundaries.qml</file>
+    </qresource>
+</RCC>
