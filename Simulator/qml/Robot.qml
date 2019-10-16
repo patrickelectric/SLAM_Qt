@@ -94,8 +94,9 @@ Item {
 
     Canvas {
         id: canvas
-        anchors.centerIn: root
         property var size: 100
+        x: movableBox.width/2 - size/2
+        y: movableBox.height/2 - size/2
         width: size
         height: width
         onPaint: {
