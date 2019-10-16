@@ -16,8 +16,8 @@ PhysicsItem {
     property var radius: 60
 
     function move(xv, yv) {
-        body.linearVelocity.x = xv;
-        body.linearVelocity.y = yv;
+        body.linearVelocity.x = xv
+        body.linearVelocity.y = yv
     }
 
     fixtures: Box {
