@@ -57,4 +57,11 @@ Canvas {
         context.lineTo(recCenter.x + (lidarOutput[0].x - center.x), recCenter.y + (lidarOutput[0].y - center.y));
         context.stroke();
     }
+
+    Connections {
+        target: physicsWorld
+        onStepped: {
+            canvas.step(physicsWorld)
+        }
+    }
 }

@@ -26,7 +26,6 @@ Item {
     Connections {
         target: physicsWorld
         onStepped: {
-            lidar.step(physicsWorld)
             avoid()
         }
     }
