@@ -10,19 +10,33 @@ Window {
     height: 600
     visible: true
 
-    Settings {
-        property alias x: screen.x
-        property alias y: screen.y
-        property alias width: screen.width
-        property alias height: screen.height
+    MouseArea {
+        id: globalMouse
+        hoverEnabled: true
+        anchors.fill: parent
+
+        onClicked: {
+            robot.destiny = Qt.point(mouseX, mouseY)
+        }
     }
 
     World {
         id: physicsWorld
     }
 
+    Rectangle {
+        x: robot.destiny.x
+        y: robot.destiny.y
+        width: 5
+        height: width
+        radius: width
+        color: "green"
+    }
+
     Robot {
         id: robot
+        body.x: screen.width/2
+        body.y: screen.height/2
     }
 
     // Obstacles
@@ -38,4 +52,11 @@ Window {
     }
 
     ScreenBoundaries {}
+
+    Settings {
+        property alias x: screen.x
+        property alias y: screen.y
+        property alias width: screen.width
+        property alias height: screen.height
+    }
 }

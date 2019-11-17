@@ -6,6 +6,8 @@ Item {
     y: movableBox.y
     property var center: Qt.point(x + width/2, y + height/2)
     property var speed: 2
+    property var destiny: center
+    property alias body: movableBox
     onXChanged: updateCenter()
     onYChanged: updateCenter()
     onWidthChanged: updateCenter()
