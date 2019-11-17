@@ -59,12 +59,12 @@ Item {
         var lastIndex = lidar.lidarOutput.length
         var alpha0 = 2*Math.PI/lastIndex
         var middleIndex = lastIndex*angle/(2*Math.PI)
-        var maxIndex = Math.round(middleIndex + lastIndex/4)
-        var minIndex = Math.round(middleIndex - lastIndex/4)
+        var maxIndex = middleIndex + lastIndex/4
+        var minIndex = middleIndex - lastIndex/4
         var alphaRS = 0
         var alphaRI = 0
         for(var i = minIndex; i < maxIndex; i++) {
-            var u = i
+            var u = Math.round(i)
             while(u < 0) {
                 u += lastIndex
             }
