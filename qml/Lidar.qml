@@ -11,7 +11,7 @@ Canvas {
 
     Repeater {
         id: rayCastRepeater
-        model: 400
+        model: 36
         Item {
             // RayCast need a parent
             RayCast {
