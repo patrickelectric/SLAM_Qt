@@ -46,11 +46,15 @@ Item {
 
     // Avoid algorithm
     function avoid() {
-        var finalPoint = Qt.point(screen.width, screen.height)
+        var finalPoint = root.destiny
         var pos = root.center
-        var dist = Math.hypot(pos.x-finalPoint.x, pos.y-finalPoint.y)
-        angle = Math.atan((pos.y-finalPoint.y)/(pos.x-finalPoint.x))
-        //print('angle', angle, finalPoint, pos, dist)
+        var dist = Math.hypot(finalPoint.x - pos.x, finalPoint.y - pos.y)
+        angle = Math.atan2(finalPoint.y - pos.y, finalPoint.x - pos.x)
+
+        if(dist < 5) {
+            movableBox.move(0, 0);
+            return
+        }
 
         var lastIndex = lidar.lidarOutput.length
         var alpha0 = 2*Math.PI/lastIndex
@@ -59,22 +63,21 @@ Item {
         var minIndex = Math.round(middleIndex - lastIndex/4)
         var alphaRS = 0
         var alphaRI = 0
-        //print('min max mid, ', minIndex, maxIndex, middleIndex, middleIndex*2*Math.PI/400)
-        //print(180*alpha0*minIndex/Math.PI, 180*alpha0*maxIndex/Math.PI, 180*alpha0*middleIndex/Math.PI)
         for(var i = minIndex; i < maxIndex; i++) {
             var u = i
-            if(i < 0) {
+            while(u < 0) {
                 u += lastIndex
-            } else if (i >= lastIndex) {
+            }
+            while (i >= lastIndex) {
                 u -= lastIndex
             }
-            var lidarDist = Math.abs(Math.hypot(pos.x-lidar.lidarOutput[u].x, pos.y-lidar.lidarOutput[u].y))
-            alphaRS += i*alpha0*Math.pow(lidarDist, 100);
-            alphaRI += Math.pow(lidarDist, 100);
+            print(i, u)
+            var lidarDist = Math.abs(Math.hypot(lidar.lidarOutput[u].x - pos.x, lidar.lidarOutput[u].y - pos.y))
+            alphaRS += i*alpha0*lidarDist;
+            alphaRI += lidarDist;
         }
         angleR = alphaRS/alphaRI;
-        //print('alphaR', angleR)
-        movableBox.move(speed*Math.cos(angleR), speed*Math.sin(angleR));
+        movableBox.move(speed*Math.cos(angleR) + speed*Math.cos(angle), speed*Math.sin(angleR) + speed*Math.sin(angle));
         canvas.requestPaint()
     }
 
